@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sympy as sp
 
-# Bisection Method Implementation
+# Bisection Method Implementation with iteration prints
 def bisection_method(func, a, b, tol=1e-5, max_iter=100):
     x = sp.symbols('x')
     # Predefine math functions like log for user input
@@ -11,14 +11,20 @@ def bisection_method(func, a, b, tol=1e-5, max_iter=100):
     f_lambdified = sp.lambdify(x, f, 'numpy')  # Convert symbolic to a numeric function
     
     if f_lambdified(a) * f_lambdified(b) >= 0:
-        raise ValueError("The function must have different signs at the endpoints.")
+        raise ValueError("The function must have different signs at the endpoints. Bisection Method Fail to find Root")
     
     midpoints = []
     intervals = []
-    for _ in range(max_iter):
+    
+    print(f"\n{'Iteration':<10}{'Midpoint':<20}{'Interval':<30}")
+    print(f"{'-'*60}")
+    
+    for i in range(max_iter):
         midpoint = (a + b) / 2
         midpoints.append(midpoint)
         intervals.append((a, b))
+        
+        print(f"{i+1:<10}{midpoint:<20.10f}[{a:<10.5f}, {b:<10.5f}]")
         
         if abs(f_lambdified(midpoint)) < tol:
             break
@@ -63,7 +69,7 @@ def main():
     
     try:
         solution, midpoints, intervals, f_lambdified = bisection_method(func, interval_a, interval_b)
-        print(f"The root is approximately at x = {solution:.5f}")
+        print(f"\nThe root is approximately at x = {solution:.5f}")
         plot_function(func, interval_a, interval_b, midpoints, intervals, solution)
     except ValueError as e:
         print(f"Error: {e}")

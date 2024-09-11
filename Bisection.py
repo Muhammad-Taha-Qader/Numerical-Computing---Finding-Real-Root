@@ -16,20 +16,26 @@ def bisection_method(func, a, b, tol=1e-5, max_iter=100):
     midpoints = []
     intervals = []
     
-    print(f"\n{'Iteration':<10}{'Midpoint':<20}{'Interval':<30}")
-    print(f"{'-'*60}")
+    print(f"\n{'Iteration':<10}{'Midpoint':<20}{'Interval':<30}{'f(a)':<15}{'f(b)':<15}{'f(mid)':<15}")
+    print(f"{'-'*90}")
     
     for i in range(max_iter):
         midpoint = (a + b) / 2
         midpoints.append(midpoint)
         intervals.append((a, b))
+
+        # Calculate function values
+        f_a = f_lambdified(a)
+        f_b = f_lambdified(b)
+        f_mid = f_lambdified(midpoint)
+
+        # Log the iteration details including f(a), f(b), and f(mid)
+        print(f"{i+1:<10}{midpoint:<20.10f}[{a:<10.5f}, {b:<10.5f}]{f_a:<15.8f}{f_b:<15.8f}{f_mid:<15.10f}")
         
-        print(f"{i+1:<10}{midpoint:<20.10f}[{a:<10.5f}, {b:<10.5f}]")
-        
-        if abs(f_lambdified(midpoint)) < tol:
+        if abs(f_mid) < tol:
             break
         
-        if f_lambdified(a) * f_lambdified(midpoint) < 0:
+        if f_a * f_mid < 0:
             b = midpoint
         else:
             a = midpoint
@@ -44,7 +50,7 @@ def plot_function(func, a, b, midpoints, intervals, solution):
     y_vals = f_lambdified(x_vals)
     
     plt.plot(x_vals, y_vals, label=f'f(x) = {func}')
-    plt.axhline(0, color='black',linewidth=0.5)
+    plt.axhline(0, color='black', linewidth=0.5)
     
     for i, (a_i, b_i) in enumerate(intervals):
         plt.axvline(a_i, color='blue', linestyle='--', label=f"Iteration {i+1} interval" if i == 0 else "")

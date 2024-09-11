@@ -5,8 +5,8 @@ import sympy as sp
 # Bisection Method Implementation with iteration prints
 def bisection_method(func, a, b, tol=1e-5, max_iter=100):
     x = sp.symbols('x')
-    # Predefine math functions like log for user input
-    local_dict = {'log': sp.log, 'sin': sp.sin, 'cos': sp.cos, 'exp': sp.exp}
+    # Predefine common math functions like log, exp, sin, cos for user input
+    local_dict = {'log': sp.log, 'sin': sp.sin, 'cos': sp.cos, 'exp': sp.exp, 'tan': sp.tan}
     f = sp.sympify(func, locals=local_dict)  # Convert the input string to a symbolic expression
     f_lambdified = sp.lambdify(x, f, 'numpy')  # Convert symbolic to a numeric function
     
@@ -39,7 +39,7 @@ def bisection_method(func, a, b, tol=1e-5, max_iter=100):
 # Plot the function and solution
 def plot_function(func, a, b, midpoints, intervals, solution):
     x_vals = np.linspace(a - 1, b + 1, 1000)
-    f = sp.sympify(func, locals={'log': sp.log, 'sin': sp.sin, 'cos': sp.cos, 'exp': sp.exp})
+    f = sp.sympify(func, locals={'log': sp.log, 'sin': sp.sin, 'cos': sp.cos, 'exp': sp.exp, 'tan': sp.tan})
     f_lambdified = sp.lambdify(sp.symbols('x'), f, 'numpy')
     y_vals = f_lambdified(x_vals)
     
@@ -62,8 +62,8 @@ def plot_function(func, a, b, midpoints, intervals, solution):
 
 # Main Function
 def main():
-    # Example: "x**2 - 4*x + log(x) = 0, interval 1<=x<=2"
-    func = input("Enter the function (e.g., x**2 - 4*x + log(x)): ")
+    # Example: "exp(x) - 2 - cos(exp(x) - 2) = 0"
+    func = input("Enter the function (e.g., exp(x) - 2 - cos(exp(x) - 2)): OR (e.g., x**2 - 4*x + log(x)): ")
     interval_a = float(input("Enter the lower bound of the interval (a): "))
     interval_b = float(input("Enter the upper bound of the interval (b): "))
     
